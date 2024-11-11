@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Calculadora</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylecalculadora.css">
+    <script src="https://kit.fontawesome.com/5934a31344.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav id="sidebar">
+        <ul id="side_items">
+            <img src="../../artefatos/img/vivo-120.png" alt="vivo logo">
+            <li class="side-item">
+                <a href="listadeestoque.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="item-description">Lista de Estoque</span>
+                </a>
+            </li>
+            <li class="side-item active">
+                <a href="calculadora.html">
+                    <i class="fa-solid fa-truck"></i>
+                    <span class="item-description">Calculadora</span>
+                </a>
+            </li>
+        </ul>
+        <ul id="config">
+            <li class="side-item">
+                <a href="configuracoes.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="item-description">Configurações</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="#">
+                    <i class="fa-solid fa-question"></i>
+                    <span class="item-description">Help Center</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div class="dados">
+            <p>Insira os dados</p>
+            <input type="text" id="product" placeholder="Produto">
+            <input type="text" id="finalZipcode" placeholder="CEP final">
+            <div class="button-group">
+                <button class="resultados">Exibir Resultados</button>
+                <button class="limpar-dados">Limpar os Dados</button>
+            </div>
+        </div>
+
+        <!-- Tabela inicialmente oculta -->
+        <div id="tableSection" class="table" style="display: none;">
+            <div class="table-header">
+                <input type="text" placeholder="Search...">
+            </div>
+            <div class="table-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>ID de Rastreamento</th>
+                            <th>Produto</th>
+                            <th>CEP Final</th>
+                            <th>Prazo</th>
+                            <th>Loja/Estoque</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Nenhum produto fictício é adicionado aqui -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+    </main>
+    <script>
+        // Função para formatar e validar o CEP
+        function formatAndValidateCep(element) {
+            let value = element.value.replace(/[^0-9]/g, '');
+            if (value.length > 8) {
+                value = value.slice(0, 8);
+            }
+            if (value.length > 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5);
+            }
+            element.value = value;
+        }
+    
+        // Adiciona a formatação de CEP ao campo de entrada
+        document.getElementById('finalZipcode').addEventListener('input', function () {
+            formatAndValidateCep(this);
+        });
+    
+        // Evento de clique para exibir a tabela
+        document.querySelector('.resultados').addEventListener('click', async function () {
+            const product = document.getElementById('product').value.trim();
+            const finalCep = document.getElementById('finalZipcode').value.replace(/[^0-9]/g, ''); // Apenas números
+
+            // Verifica se os campos estão preenchidos e se o CEP tem exatamente 8 dígitos
+            if (product === "" || finalCep === "") {
+                alert('Por favor, preencha todos os campos.');
+                return;
+            }
+
+            if (finalCep.length !== 8) {
+                alert('O CEP deve conter exatamente 8 números.');
+                return;
+            }
+
+            // Faz a chamada HTTP para o backend para buscar os dados do produto
+            try {
+                const response = await fetch(`http://back-1444718256.us-east-1.elb.amazonaws.com:3001/produto/${product}`);
+                if (!response.ok) {
+                    throw new Error('Erro ao buscar dados do produto');
+                }
+
+                const data = await response.json();
+
+                if (data.length === 0) {
+                    alert('Nenhum produto encontrado.');
+                    return;
+                }
+
+                // Exibe a tabela
+                document.getElementById('tableSection').style.display = 'block';
+
+                // Limpa o conteúdo da tabela antes de adicionar novos dados
+                const tbody = document.querySelector('.table-section tbody');
+                tbody.innerHTML = ''; // Reinicia o conteúdo do tbody
+
+                // Percorre os dados retornados e adiciona à tabela
+                data.forEach(item => {
+                    // Verifica se o produto já está na tabela
+                    const tableRows = document.querySelectorAll('.table-section tbody tr');
+                    let productExists = false;
+
+                    tableRows.forEach(row => {
+                        const existingProduct = row.querySelector('td:nth-child(2)').textContent.trim();
+                        if (existingProduct === item.product_name) {
+                            productExists = true;
+                        }
+                    });
+
+                    if (!productExists) {
+                        const newRow = `
+                            <tr>
+                                <td>${item.tracking_id || 'ID não disponível'}</td>
+                                <td>${item.product_name}</td>
+                                <td>${item.cep|| 'CEP inicial não disponível'}</td>
+                                <td>${item.quantidade || 'Quantidade não disponível'}</td>
+                                <td>${item.loja_estoque || 'Loja não disponível'}</td>
+                                <td class="disponivel">${item.status || 'Disponível'}</td>
+                                <td>
+                                    <button class="edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                                    <button class="delete-btn"><i class="fa-solid fa-trash-can"></i></button>
+                                </td>
+                            </tr>
+                        `;
+
+                        // Adiciona a nova linha na tabela
+                        document.querySelector('.table-section tbody').insertAdjacentHTML('beforeend', newRow);
+                    }
+                });
+
+                // Associa a função de deletar às novas linhas
+                addDeleteFunctionality();
+
+            } catch (error) {
+                console.error('Erro ao buscar dados:', error);
+                alert('Ocorreu um erro ao buscar os dados do produto.');
+            }
+        });
+
+    
+        // Função para adicionar a funcionalidade de deletar
+        function addDeleteFunctionality() {
+            const deleteButtons = document.querySelectorAll('.delete-btn');
+            deleteButtons.forEach(button => {
+                button.addEventListener('click', function () {
+                    this.closest('tr').remove(); // Remove a linha correspondente
+                });
+            });
+        }
+    
+        // Função para limpar os campos do formulário
+        function limparDados() {
+            document.getElementById('product').value = '';
+            document.getElementById('finalZipcode').value = '';
+        }
+    
+        // Evento de clique para limpar os dados do formulário
+        document.querySelector('.limpar-dados').addEventListener('click', function () {
+            limparDados(); // Chama a função para limpar os campos do formulário
+        });
+    
+        // Certifica-se de que a tabela esteja oculta ao carregar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            document.getElementById('tableSection').style.display = 'none'; // Esconde a tabela inicialmente
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Configurações</title>
+    <link rel="stylesheet" href="styleconfiguracoes.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://kit.fontawesome.com/5934a31344.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav id="sidebar">
+        <ul id="side_items">
+            <img src="../../artefatos/img/vivo-120.png" alt="vivo logo">
+            <li class="side-item">
+                <a href="listadeestoque.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="item-description">Lista de Estoque</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="calculadora.html">
+                    <i class="fa-solid fa-truck"></i>
+                    <span class="item-description">Calculadora</span>
+                </a>
+            </li>
+        </ul>
+        <ul id="config">
+            <li class="side-item active">
+                <a href="configuracoes.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="item-description">Configurações</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="#">
+                    <i class="fa-solid fa-question"></i>
+                    <span class="item-description">Ajuda</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+
+    <main>
+        <div class="config-dados">
+            <h1>Configurações do Site</h1>
+            <label for="fontSizeControl">Tamanho da Fonte:</label>
+            <input type="range" id="fontSizeControl" min="10" max="50" value="16">
+            <span id="fontSizeValue">16px</span>
+            <br>
+            <label for="colorMode">Ativar Modo Daltonismo:</label>
+            <input type="checkbox" id="colorMode">
+            <br>
+            <button id="saveSettings">Salvar Configurações</button>
+        </div>
+    </main>
+
+    <script src="configuracoes.js"></script>
+</body>
+</html>

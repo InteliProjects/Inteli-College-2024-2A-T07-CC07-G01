@@ -1,0 +1,237 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #660099;
+    font-family: 'Inter', sans-serif;
+}
+
+#sidebar {
+    padding: 1.6vw;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    border-radius: 0vw 1.25vw 1.25vw 0vw;
+}
+
+img {
+    width: 6.21vw;
+}
+
+/* Estilo para os itens do menu superior */
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw; /* Ajuste para ficar igual ao padrão */
+    list-style: none;
+}
+
+/* Estilo para os itens do menu inferior */
+#side_items_bottom {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw; /* Ajuste para manter padrão com as outras páginas */
+    list-style: none;
+    margin-top: auto; /* Empurra o bloco inferior para baixo */
+    padding-top: 2vw; /* Espaçamento entre os blocos */
+}
+
+.side-item {
+    padding: .52vw;
+    cursor: pointer;
+    border-radius: .83vw;
+}
+
+.side-item.active {
+    border: solid .1vw #660099;
+    background-color: #e6e6fa; /* Fundo claro para o item ativo */
+}
+
+.side-item:hover {
+    background-color: #d4d4d4; /* Cor ao passar o mouse */
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 1.3vw;
+    gap: .73vw;
+}
+
+.side-item.active a {
+    color: #660099; /* Cor do texto ativo */
+}
+
+.side-item i {
+    font-size: 1.5vw; /* Tamanho dos ícones */
+    color: black;
+}
+
+.side-item.active i {
+    color: #660099; /* Cor do ícone ativo */
+}
+
+.side-item:hover i {
+    color: #660099; /* Cor do ícone ao passar o mouse */
+}
+
+main {
+    display: flex;
+    flex-direction: column; /* Coloca os elementos em uma coluna */
+    align-items: center; /* Centraliza os elementos na coluna */
+    justify-content: center;
+    padding: 0;
+    width: 100%; /* Garante que o main ocupe toda a largura disponível */
+}
+
+.dados {
+    height: 40vh;
+    width: 30.6vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #ffffff;
+    padding: 2.3vw;
+    gap: 1.56vw;
+    font-size: .8vw;
+    border-radius: .5vw;
+    margin-bottom: 2vw; /* Adiciona espaço abaixo do formulário */
+}
+
+.dados p {
+    padding: 0vw 8.85vw 0vw 0vw;
+    font-size: 2.3vw;
+    font-weight: bold;
+    color: #660099;
+}
+
+.dados input {
+    width: 26.9vw;
+    height: 5vh;
+    border: solid .1vw #660099;
+    border-radius: 1vw;
+    padding: .5vw;
+    cursor: pointer;
+    font-size: 1.2vw;
+}
+
+.dados button {
+    width: 11.7vw;
+    height: 5vh;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background-color: #660099;
+    color: #ffffff;
+    padding: .5vw;
+    border-radius: 1vw;
+    cursor: pointer;
+    font-size: 1.2vw;
+}
+
+.table {
+    width: 90%; /* Certifique-se de que a tabela ocupa toda a largura disponível */
+    margin-top: 2vw; /* Adiciona um espaçamento entre o formulário e a tabela */
+    margin: 0 auto; /* Centraliza a tabela horizontalmente */
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vw;
+    background-color: #ffffff;
+    border-radius: 0.5vw 0.5vw 0vw 0vw;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-header input {
+    width: 15vw; /* Define uma largura fixa para o campo de pesquisa */
+    padding: 0.5vw;
+    border-radius: 0.5vw;
+    border: 0.1vw solid #ccc;
+}
+
+.add-produtos {
+    padding: 0.5vw 1vw;
+    border-radius: 0.5vw;
+    border: none;
+    background-color: #624DE3;
+    color: #ffffff;
+    font-size: 1vw;
+    cursor: pointer;
+}
+
+.table-section {
+    background-color: #ffffff;
+    border-radius: 0vw 0vw 0.5vw 0.5vw;
+    overflow-x: auto; /* Adiciona rolagem horizontal para tabelas largas */
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.table-section table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.table-section th,
+.table-section td {
+    padding: 1vw;
+    text-align: left;
+    font-size: 1vw;
+    border-bottom: 0.1vw solid #ddd;
+}
+
+.table-section th {
+    background-color: #f4f4f4;
+}
+
+.table-section td button {
+    background: none;
+    border: none;
+    color: inherit;
+    cursor: pointer;
+    font-size: 1.2vw;
+}
+
+.delivered {
+    color: green;
+    font-weight: bold;
+}
+
+.indisponivel {
+    color: red;
+    font-weight: bold;
+}
+
+button:hover {
+    background-color: #52007a;
+}
+/* Remover os bullets (pontos) dos itens da lista */
+#side_items, #config {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none; /* Remove os marcadores de lista */
+    padding-left: 0;  /* Remove qualquer padding à esquerda */
+}
+
+#side_items_bottom {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none; /* Remove os marcadores de lista */
+    padding-left: 0;  /* Remove qualquer padding à esquerda */
+    margin-top: auto; /* Empurra para baixo */
+    padding-top: 2vw; /* Espaçamento superior */
+}

@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Produto</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="stylecadastrar.css">
+    <script src="https://kit.fontawesome.com/5934a31344.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav id="sidebar">
+        <ul id="side_items">
+            <img src="../../artefatos/img/vivo-120.png" alt="vivo logo">
+            <li class="side-item active">
+                <a href="listadeestoque.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="item-description">Lista De Estoque</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="calculadora.html">
+                    <i class="fa-solid fa-truck"></i>
+                    <span class="item-description">Calculadora</span>
+                </a>
+            </li>
+        </ul>
+        <ul id="config">
+            <li class="side-item">
+                <a href="configuracoes.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="item-description">Configurações</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="#">
+                    <i class="fa-solid fa-question"></i>
+                    <span class="item-description">Help Center</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div class="dados">
+            <p>Cadastro de produto</p>
+
+            <!-- Formulário para cadastro de produto -->
+            <form id="productForm" enctype="multipart/form-data">
+                <!-- Campo SKU -->
+                <input type="number" id="sku" placeholder="Sku" required>
+                
+                <!-- Campo Nome do Produto -->
+                <input type="text" id="product" placeholder="Produto" required> 
+                
+                <!-- Campo CEP -->
+                <input type="text" id="zipcode" placeholder="CEP" required maxlength="9"> 
+                
+                <!-- Campo Quantidade -->
+                <input type="number" id="quantity" placeholder="Quantidade" required> 
+                
+                <!-- Campo Loja/Estoque -->
+                <input type="text" id="store" placeholder="Loja/Estoque" required> 
+                
+                <!-- Adição do input CSV -->
+
+                <label class="custom-file-upload">
+                    <i class="fa-solid fa-file-csv"></i> Escolher arquivo CSV
+                    <input type="file" id="csvFile" accept=".csv" style="display: none;">
+                </label>
+                <span id="file-name">Nenhum arquivo selecionado</span>
+
+
+                <!-- Botões para enviar ou cancelar -->
+                <div class="buttons">
+                    <button type="button" id="cancelBtn">Cancelar</button>
+                    <button type="submit">Cadastrar</button>
+                </div>
+            </form>
+
+            <div id="result"></div>
+        </div>
+    </main>
+
+    <script>
+        // Função para formatar e validar o CEP
+        function formatAndValidateCep(element) {
+            let value = element.value.replace(/[^0-9]/g, ''); // Remove caracteres não numéricos
+            if (value.length > 8) {
+                value = value.slice(0, 8); // Limita o CEP a 8 dígitos
+            }
+            if (value.length > 5) {
+                value = value.slice(0, 5) + '-' + value.slice(5); // Adiciona o hífen no CEP
+            }
+            element.value = value; // Atualiza o valor do campo CEP
+        }
+
+        // Adiciona a formatação de CEP ao campo de entrada
+        document.getElementById('zipcode').addEventListener('input', function () {
+            formatAndValidateCep(this); // Chama a função de formatação ao digitar no campo
+        });
+
+
+        // Evento para exibir o nome do arquivo CSV selecionado
+        document.getElementById('csvFile').addEventListener('change', function(event) {
+            const fileName = event.target.files.length > 0 ? event.target.files[0].name : 'Nenhum arquivo selecionado';
+            document.getElementById('file-name').textContent = fileName;
+            
+
+            const isCSVSelected = event.target.files.length > 0; // Verifica se um arquivo CSV foi selecionado
+            
+            // Seleciona os campos de entrada do formulário
+            const inputs = document.querySelectorAll('#sku, #product, #zipcode, #quantity, #store');
+
+            // Habilita ou desabilita os campos com base no estado do CSV
+            inputs.forEach(input => {
+                if (isCSVSelected) {
+                    input.removeAttribute('required'); // Remove a obrigatoriedade dos campos
+                    input.disabled = true; // Desabilita os campos
+                } else {
+                    input.setAttribute('required', 'true'); // Torna os campos obrigatórios novamente
+                    input.disabled = false; // Habilita os campos
+                }
+            });
+        });
+
+        // Evento de submissão do formulário
+        document.getElementById('productForm').addEventListener('submit', function(event) {
+            event.preventDefault(); // Previne o comportamento padrão de envio do formulário
+
+            const formData = new FormData(); // Cria um novo objeto FormData para envio de dados
+            const csvFile = document.getElementById('csvFile').files[0]; // Obtém o arquivo CSV selecionado
+
+            // Verifica se há um CSV selecionado
+            if (csvFile) {
+                formData.append('csvFile', csvFile); // Adiciona o arquivo CSV ao FormData
+
+                // Envia o arquivo CSV ao backend
+                fetch('http://back-1444718256.us-east-1.elb.amazonaws.com:3001/upload-csv', {
+                    method: 'POST',
+                    body: formData
+                })
+                .then(response => response.text())
+                .then(result => {
+                    alert(result); // Exibe uma mensagem de sucesso
+                    window.location.href = 'listadeestoque.html'; // Redireciona para a lista de estoque
+                })
+                .catch(error => console.error('Erro ao enviar arquivo CSV:', error)); // Loga qualquer erro
+            } else {
+                // Coleta os valores dos campos do formulário para envio manual
+                const sku = document.getElementById('sku').value.trim();
+                const product = document.getElementById('product').value.trim();
+                const cep = document.getElementById('zipcode').value.trim();
+                const quantity = document.getElementById('quantity').value;
+                const store = document.getElementById('store').value.trim();
+
+                // Cria o objeto de produto
+                const newProduct = {
+                    sku,
+                    product,
+                    cep,
+                    quantity,
+                    store
+                };
+
+                // Envia os dados do produto ao backend
+                fetch('http://back-1444718256.us-east-1.elb.amazonaws.com:3001/produtos', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json' // Define o cabeçalho como JSON
+                    },
+                    body: JSON.stringify(newProduct) // Converte o objeto para JSON e envia no corpo da requisição
+                })
+                .then(response => response.json())
+                .then(() => {
+                    alert('Cadastro realizado com sucesso!'); // Exibe uma mensagem de sucesso
+                    window.location.href = 'listadeestoque.html'; // Redireciona para a lista de estoque
+                })
+                .catch(error => console.error('Erro ao cadastrar produto:', error)); // Loga qualquer erro
+            }
+        });
+
+        // Evento para resetar o formulário ao clicar no botão de cancelar (se aplicável)
+        document.getElementById("cancelBtn").addEventListener("click", function() {
+            window.location.href = "listadeestoque.html"; // Redireciona para a página de lista de estoque
+        });
+    </script>
+</body>
+</html>

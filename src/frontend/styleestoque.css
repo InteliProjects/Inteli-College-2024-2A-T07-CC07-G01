@@ -1,0 +1,151 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #660099;
+    font-family: 'Inter', sans-serif;
+}
+
+#sidebar {
+    padding: 1.6vw;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    border-radius: 0vw 1.25vw 1.25vw 0vw;
+}
+
+img {
+    width: 6.21vw;
+}
+
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none;
+}
+
+#config {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none;
+}
+
+.side-item {
+    padding: .52vw;
+    cursor: pointer;
+    border-radius: .83vw;
+}
+
+.side-item.active {
+    border: solid .1vw #660099;
+}
+
+.side-item:hover {
+    background-color: #d4d4d4;
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 1.3vw;
+    gap: .73vw;
+}
+
+.side-item.active a {
+    color: #660099;
+}
+
+main {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.table {
+    width: 70vw;
+    background-color: #ffffff;
+    border-radius: 1.6vw;
+    padding: 1vw;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin: 2vw auto; /* Centraliza horizontalmente */
+}
+
+.table-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1vw;
+    background-color: #ffffff;
+    border-radius: 1.6vw 1.6vw 0vw 0vw;
+}
+
+.add-produtos {
+    padding: .6vw;
+    border-radius: .8vw;
+    border: none;
+    background-color: #624DE3;
+    color: #ffffff;
+    font-size: 1vw;
+    cursor: pointer;
+}
+
+.table-header input {
+    padding: .6vw;
+    border-radius: .8vw;
+    border: solid .1vw #9E9E9E;
+    color: #9E9E9E;
+    width: 60%; /* Aumenta a largura do campo de busca */
+}
+
+.table-section {
+    padding: 1vw;
+    height: auto;
+    overflow: visible; /* Remove o overflow */
+    background-color: #ffffff;
+    border-radius: 0vw 0vw 1.6vw 1.6vw;
+}
+
+.table-section table {
+    width: 100%;
+    border-collapse: collapse; /* Remove os espaços entre células */
+}
+
+thead th {
+    font-size: 1.1vw;
+    padding: 0.8vw;
+}
+
+th, td {
+    text-align: center;
+    padding: 0.8vw;
+    font-size: 0.9vw; /* Reduz o tamanho da fonte */
+}
+
+td button:nth-child(1), td button:nth-child(2) {
+    border: none;
+    background-color: #ffffff;
+    cursor: pointer;
+    font-size: 1.2vw;
+}
+
+td button:nth-child(1) {
+    color: #624DE3;
+}
+
+td button:nth-child(2) {
+    color: #A30D11;
+}

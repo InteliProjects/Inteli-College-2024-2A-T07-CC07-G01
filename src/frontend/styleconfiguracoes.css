@@ -1,0 +1,164 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    display: flex;
+    min-height: 100vh;
+    background-color: #660099;
+    font-family: 'Inter', sans-serif;
+}
+
+#sidebar {
+    padding: 1.6vw;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    border-radius: 0vw 1.25vw 1.25vw 0vw;
+}
+
+img {
+    width: 6.21vw;
+}
+
+#side_items {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none;
+}
+
+#config {
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none;
+}
+
+.side-item {
+    padding: .52vw;
+    cursor: pointer;
+    border-radius: .83vw;
+}
+
+.side-item.active {
+    border: solid .1vw #660099;
+}
+
+.side-item:hover {
+    background-color: #d4d4d4;
+}
+
+.side-item a {
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 1.3vw;
+    gap: .73vw;
+}
+
+.side-item.active a {
+    color: #660099;
+}
+
+.side-item.active i {
+    color: #660099;
+}
+
+.side-item i {
+    color: black;
+}
+
+.side-item:hover i {
+    color: #660099;
+}
+
+main {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 0;
+    width: 100%;
+}
+
+.config-dados {
+    background-color: #ffffff;
+    width: 30vw;
+    padding: 2vw;
+    border-radius: .5vw;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.config-dados h1 {
+    font-size: 2vw;
+    color: #660099;
+    margin-bottom: 2vw;
+}
+
+.config-dados label {
+    display: block;
+    margin-bottom: 1vw;
+    font-size: 1.2vw;
+    color: #333;
+}
+
+#fontSizeControl {
+    width: 100%;
+    margin-bottom: 1vw;
+}
+
+#fontSizeValue {
+    font-size: 1.2vw;
+    color: #660099;
+    margin-top: 1vw;
+    display: inline-block;
+}
+
+#colorMode {
+    margin-top: 1vw;
+}
+
+button {
+    width: 100%;
+    height: 5vh;
+    background-color: #660099;
+    color: #ffffff;
+    padding: .5vw;
+    border-radius: 1vw;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2vw;
+    margin-top: 2vw;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: #52007a;
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+    main {
+        width: 90%;
+    }
+
+    .config-dados {
+        width: 90%;
+    }
+
+    .config-dados h1 {
+        font-size: 4vw;
+    }
+
+    button {
+        font-size: 2vw;
+        padding: 1vw;
+    }
+}

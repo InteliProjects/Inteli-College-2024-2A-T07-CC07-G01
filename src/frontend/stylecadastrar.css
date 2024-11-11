@@ -1,0 +1,177 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: #660099;
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+}
+
+#sidebar{
+    padding: 1.6vw;
+    background-color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100vh;
+    border-radius: 0vw 1.25vw 1.25vw 0vw;
+    justify-content: space-between; /* Distribui o espaço entre os itens */
+}
+
+img{
+    width: 6.21vw;
+}
+
+#side_items{
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none;
+    flex-grow: 1; /* Faz com que essa seção ocupe todo o espaço disponível */
+}
+
+#config{
+    display: flex;
+    flex-direction: column;
+    gap: .4vw;
+    list-style: none;
+    margin-top: auto; /* Empurra essa seção para baixo */
+}
+
+.side-item{
+    
+    padding: .52vw;
+    cursor: pointer;
+    border-radius: .83vw;
+}
+
+.side-item.active{
+    border: solid .1vw #660099;
+}
+
+.side-item:hover{
+    background-color: #d4d4d4;
+}
+
+.side-item a{
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    color: black;
+    font-size: 1.3vw;
+    gap: .73vw;
+}
+
+.side-item.active a{
+    color: #660099;
+}
+
+main{
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.dados{
+    width: 40.6vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background-color: #ffffff;
+    padding: 2.3vw;
+    gap: 1.56vw;
+    font-size: .8vw;
+    border-radius: .5vw;   
+}
+
+.dados p{
+    font-size: 2.3vw;
+    font-weight: bold;
+    color: #660099;
+    align-self: flex-start;
+}
+
+.dados input{
+    width: 100%;
+    height: 5vh;
+    border: solid .1vw #660099;
+    border-radius: 1vw;
+    padding: .5vw;
+    cursor: pointer;
+    font-size: 1.2vw;
+    margin-bottom: 1.5vw;
+}
+
+.buttons {
+    display: flex;
+    gap: 1vw; /* Espaço entre os botões */
+    width: 100%;
+    justify-content: space-between;
+}
+
+.dados button {
+    width: 48%; /* Ambos os botões terão 48% da largura do container para ficarem do mesmo tamanho */
+    height: 5vh;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    padding: .5vw;
+    border-radius: 1vw;
+    cursor: pointer;
+    font-size: 1.2vw;
+    position: relative;
+}
+
+.dados button[type="submit"] {
+    background-color: #660099;
+    color: #ffffff;
+}
+
+#cancelBtn {
+    background-color: #a9a9a9; /* Cor cinza para o botão cancelar */
+    color: #ffffff;
+}
+
+#cancelBtn:hover {
+    background-color: #808080; /* Cor ao passar o mouse */
+}
+
+
+.dados button[type="submit"]:hover {
+    background-color: #4d0073; /* Cor mais escura ao passar o mouse */
+    color: #ffffff; /* Mantém o texto branco */
+}
+
+
+.custom-file-upload {
+    display: inline-block;
+    padding: 0.5vw 1vw;
+    cursor: pointer;
+    font-size: 1.2vw;
+    background-color: #660099;
+    color: white;
+    border-radius: 1vw;
+    margin-bottom: 1.5vw;
+}
+
+.custom-file-upload:hover {
+    background-color: #4d0073; /* Cor mais escura ao passar o mouse */
+
+}
+
+#addBtn:hover {
+    color: #4d0073; /* Efeito hover apenas alterando a cor da fonte */
+}
+
+.dados #csvFile{
+    border: none;
+}

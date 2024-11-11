@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lista de Estoque</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styleestoque.css">
+    <script src="https://kit.fontawesome.com/5934a31344.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <nav id="sidebar">
+        <ul id="side_items">
+            <img src="../../artefatos/img/vivo-120.png" alt="vivo logo">
+            <li class="side-item active">
+                <a href="listadeestoque.html">
+                    <i class="fa-solid fa-cart-shopping"></i>
+                    <span class="item-description">Lista de Estoque</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="calculadora.html">
+                    <i class="fa-solid fa-truck"></i>
+                    <span class="item-description">Calculadora</span>
+                </a>
+            </li>
+        </ul>
+        <ul id="config">
+            <li class="side-item">
+                <a href="configuracoes.html">
+                    <i class="fa-solid fa-gear"></i>
+                    <span class="item-description">Configurações</span>
+                </a>
+            </li>
+            <li class="side-item">
+                <a href="#">
+                    <i class="fa-solid fa-question"></i>
+                    <span class="item-description">Ajuda</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+    <main>
+        <div class="table">
+            <div class="table-header">
+                <input type="text" id="searchInput" placeholder="Pesquisar Produto..."> <!-- Campo de pesquisa para produtos -->
+                <button class="add-produtos">+ Adicionar Produto</button> <!-- Botão para adicionar um novo produto -->
+            </div>
+            <div class="table-section">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>SKU</th>
+                            <th>Produto</th>
+                            <th>CEP</th>
+                            <th>Quantidade</th>
+                            <th>Loja/Estoque</th>
+                            <th>Status</th>
+                            <th>Ação</th>
+                        </tr>
+                    </thead>
+                    <tbody id="productTableBody">
+                        <!-- Produtos serão carregados dinamicamente -->
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const addButton = document.querySelector('.add-produtos'); // Seleciona o botão de adicionar produtos
+            addButton.addEventListener('click', function() {
+                window.location.href = 'cadastrar.html'; // Redireciona para a página de cadastro de produto
+            });
+
+            // Função para carregar produtos do servidor e exibir na tabela
+            function loadProducts() {
+                fetch('http://back-1444718256.us-east-1.elb.amazonaws.com:3001/produtos') // Faz uma requisição GET para o endpoint /produtos
+                    .then(response => response.json()) // Converte a resposta para JSON
+                    .then(products => {
+                        const tableBody = document.getElementById('productTableBody'); // Seleciona o corpo da tabela
+                        tableBody.innerHTML = ''; // Limpa o conteúdo atual da tabela
+
+                        // Adiciona cada produto retornado na tabela
+                        products.forEach(product => {
+                            const newRow = `
+                                <tr>
+                                    <td>${product.tracking_id}</td>
+                                    <td>${product.product_name}</td>
+                                    <td>${product.cep}</td>
+                                    <td>${product.quantidade}</td>
+                                    <td>${product.loja_estoque}</td>
+                                    <td class="disponivel">Disponível</td>
+                                    <td>
+                                        <button class="edit-btn"><i class="fa-solid fa-pen-to-square"></i></button>
+                                        <button class="delete-btn" data-id="${product.tracking_id}"><i class="fa-solid fa-trash-can"></i></button>
+                                    </td>
+                                </tr>
+                            `;
+                            tableBody.insertAdjacentHTML('beforeend', newRow); // Insere a nova linha na tabela
+                        });
+
+                        addDeleteFunctionality(); // Adiciona funcionalidade de deletar para cada produto
+                    })
+                    .catch(error => console.error('Erro ao carregar produtos:', error)); // Loga qualquer erro que ocorrer
+            }
+
+            // Função para adicionar a funcionalidade de deletar produtos
+            function addDeleteFunctionality() {
+                const deleteButtons = document.querySelectorAll('.delete-btn'); // Seleciona todos os botões de deletar
+                deleteButtons.forEach(button => {
+                    button.addEventListener('click', function () {
+                        const productId = this.getAttribute('data-id'); // Obtém o ID do produto
+                        deleteProduct(productId); // Chama a função para deletar o produto
+                    });
+                });
+            }
+
+            // Função para deletar um produto no servidor
+            function deleteProduct(productId) {
+                fetch(`http://back-1444718256.us-east-1.elb.amazonaws.com:3001/produtos/${productId}`, {
+                    method: 'DELETE' // Faz uma requisição DELETE para o servidor
+                })
+                .then(() => loadProducts()) // Recarrega a lista de produtos após a exclusão
+                .catch(error => console.error('Erro ao deletar produto:', error)); // Loga qualquer erro que ocorrer
+            }
+
+            // Função de pesquisa de produtos
+            document.getElementById('searchInput').addEventListener('input', function () {
+                const searchTerm = this.value.toLowerCase(); // Obtém o termo de pesquisa
+                const rows = document.querySelectorAll('#productTableBody tr'); // Seleciona todas as linhas da tabela
+
+                // Filtra as linhas com base no termo de pesquisa
+                rows.forEach(row => {
+                    const productName = row.cells[1].textContent.toLowerCase();
+                    if (productName.includes(searchTerm)) {
+                        row.style.display = ''; // Mostra a linha se o termo de pesquisa for encontrado
+                    } else {
+                        row.style.display = 'none'; // Esconde a linha se o termo de pesquisa não for encontrado
+                    }
+                });
+            });
+
+            // Carrega os produtos ao carregar a página
+            loadProducts();
+        });
+    </script>
+</body>
+</html>
